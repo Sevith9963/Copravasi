@@ -1,0 +1,8 @@
+services:
+  - type: web
+    name: tourism-php
+    env: docker
+    plan: free
+    repo: https://github.com/Sevith9963/tourism
+    dockerfilePath: ./Dockerfile
+    region: oregon
