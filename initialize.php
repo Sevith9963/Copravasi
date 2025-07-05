@@ -23,7 +23,7 @@ if (!defined('base_url')) define('base_url', $base_url);
 if (!defined('base_app')) define('base_app', str_replace('\\', '/', __DIR__) . '/');
 if (!defined('dev_data')) define('dev_data', $dev_data);
 
-// Environment-based DB configs
+// Environment-based DB configs (can be set in Render, Docker, etc.)
 if (!defined('DB_SERVER')) define('DB_SERVER', getenv('DB_SERVER') ?: '127.0.0.1'); // use IP to avoid socket errors
 if (!defined('DB_USERNAME')) define('DB_USERNAME', getenv('DB_USERNAME') ?: 'root');
 if (!defined('DB_PASSWORD')) define('DB_PASSWORD', getenv('DB_PASSWORD') ?: '');
