@@ -55,5 +55,5 @@ if (!function_exists('isMobileDevice')) {
     }
 }
 
-ob_end_flush(); // Flush buffer after setup
+
 ?>
