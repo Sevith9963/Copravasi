@@ -1,19 +1,13 @@
 FROM php:8.1-apache
 
-# Install required Apache modules
-RUN a2enmod rewrite headers
+# Install mysqli extension
+RUN docker-php-ext-install mysqli && docker-php-ext-enable mysqli
 
-# Set ServerName to suppress warning
-RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
+# Optional: Enable Apache modules if needed
+RUN a2enmod headers rewrite
 
-# Copy your PHP files
+# Copy project files
 COPY . /var/www/html/
 
-# Set correct permissions (optional)
-RUN chown -R www-data:www-data /var/www/html
-
-# Expose port 80
+# Expose port
 EXPOSE 80
-
-# Start Apache in foreground
-CMD ["apache2-foreground"]
