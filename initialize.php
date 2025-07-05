@@ -27,6 +27,6 @@ if (!defined('dev_data')) define('dev_data', $dev_data);
 // DB config (use env or fallback)
 if (!defined('DB_SERVER')) define('DB_SERVER', getenv('DB_SERVER') ?: '127.0.0.1');
 if (!defined('DB_USERNAME')) define('DB_USERNAME', getenv('DB_USERNAME') ?: 'root');
-if (!defined('DB_PASSWORD')) define('DB_PASSWORD', getenv('DB_PASSWORD') ?: '');
+if (!defined('DB_PASSWORD')) define('DB_PASSWORD', getenv('DB_PASSWORD') ?: '12345678');
 if (!defined('DB_NAME')) define('DB_NAME', getenv('DB_NAME') ?: 'tourism_db');
 ?>
