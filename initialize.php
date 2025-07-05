@@ -18,7 +18,7 @@ if (php_sapi_name() !== 'cli' && isset($_SERVER['HTTP_HOST'])) {
     $base_url = rtrim($base_url, '/') . '/';
 } else {
     // Fallback for CLI (e.g., cron jobs or unit tests)
-    $base_url = 'http://localhost/tourism/';
+    $base_url = 'http://localhost/Copravasi/';
 }
 
 // Define global constants only if not already defined
