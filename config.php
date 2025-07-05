@@ -1,15 +1,16 @@
 <?php
-ob_start(); // Start output buffering - MUST be first
+ob_start(); // Start output buffering early
 ini_set('date.timezone', 'Asia/Manila');
 date_default_timezone_set('Asia/Manila');
 
-session_start(); // Must come BEFORE any HTML/output
+// Must be before any output
+session_start();
 
 require_once('initialize.php');
 require_once('classes/DBConnection.php');
 require_once('classes/SystemSettings.php');
 
-// Create DB connection with error handling
+// Create DB connection
 try {
     $db = new DBConnection();
     $conn = $db->conn;
@@ -17,7 +18,7 @@ try {
     die("Database connection failed. Please contact the administrator.");
 }
 
-// Redirect helper
+// Helpers
 if (!function_exists('redirect')) {
     function redirect($url = '') {
         if (!empty($url)) {
@@ -26,7 +27,6 @@ if (!function_exists('redirect')) {
     }
 }
 
-// Image validation helper
 if (!function_exists('validate_image')) {
     function validate_image($file) {
         if (!empty($file) && is_file(base_app . $file)) {
@@ -36,18 +36,16 @@ if (!function_exists('validate_image')) {
     }
 }
 
-// Mobile device detection
 if (!function_exists('isMobileDevice')) {
     function isMobileDevice() {
         $aMobileUA = array(
-            '/iphone/i'     => 'iPhone',
-            '/ipod/i'       => 'iPod',
-            '/ipad/i'       => 'iPad',
-            '/android/i'    => 'Android',
+            '/iphone/i' => 'iPhone',
+            '/ipod/i' => 'iPod',
+            '/ipad/i' => 'iPad',
+            '/android/i' => 'Android',
             '/blackberry/i' => 'BlackBerry',
-            '/webos/i'      => 'Mobile'
+            '/webos/i' => 'Mobile'
         );
-
         foreach ($aMobileUA as $sMobileKey => $sMobileOS) {
             if (preg_match($sMobileKey, $_SERVER['HTTP_USER_AGENT'])) {
                 return true;
@@ -57,5 +55,5 @@ if (!function_exists('isMobileDevice')) {
     }
 }
 
-ob_end_flush(); // End output buffering safely
+ob_end_flush(); // Flush buffer after setup
 ?>
