@@ -1,5 +1,5 @@
 <?php
-// Ensure constants are loaded
+// Ensure DB constants are loaded
 if (!defined('DB_SERVER')) {
     require_once("../initialize.php");
 }
@@ -13,19 +13,17 @@ class DBConnection {
     public $conn;
 
     public function __construct() {
-        // 🔍 Debug: Show the DB password being used (TEMPORARY — remove later)
-        echo "🔍 Using DB password: '" . $this->password . "'<br>";
-
-        // Create connection
+        // Create the MySQLi connection
         $this->conn = new mysqli($this->host, $this->username, $this->password, $this->database);
 
-        // Handle connection error
+        // Check for connection error
         if ($this->conn->connect_error) {
             die("❌ Database connection failed: " . $this->conn->connect_error);
         }
     }
 
     public function __destruct() {
+        // Close the connection on destruction
         if ($this->conn) {
             $this->conn->close();
         }

@@ -1,16 +1,20 @@
 <?php
-ob_start(); // Start output buffering early
+// ✅ Ensure nothing is output before this line
+ob_start(); // Start output buffering to prevent "headers already sent" errors
+
+// ✅ Set timezone
 ini_set('date.timezone', 'Asia/Manila');
 date_default_timezone_set('Asia/Manila');
 
-// Must be before any output
+// ✅ Start session immediately after buffering (before any echo or HTML)
 session_start();
 
+// ✅ Load configuration and classes
 require_once('initialize.php');
 require_once('classes/DBConnection.php');
 require_once('classes/SystemSettings.php');
 
-// Create DB connection
+// ✅ Create database connection
 try {
     $db = new DBConnection();
     $conn = $db->conn;
@@ -18,7 +22,7 @@ try {
     die("Database connection failed. Please contact the administrator.");
 }
 
-// Helpers
+// ✅ Helper functions
 if (!function_exists('redirect')) {
     function redirect($url = '') {
         if (!empty($url)) {
@@ -39,12 +43,12 @@ if (!function_exists('validate_image')) {
 if (!function_exists('isMobileDevice')) {
     function isMobileDevice() {
         $aMobileUA = array(
-            '/iphone/i' => 'iPhone',
-            '/ipod/i' => 'iPod',
-            '/ipad/i' => 'iPad',
-            '/android/i' => 'Android',
-            '/blackberry/i' => 'BlackBerry',
-            '/webos/i' => 'Mobile'
+            '/iphone/i'      => 'iPhone',
+            '/ipod/i'        => 'iPod',
+            '/ipad/i'        => 'iPad',
+            '/android/i'     => 'Android',
+            '/blackberry/i'  => 'BlackBerry',
+            '/webos/i'       => 'Mobile'
         );
         foreach ($aMobileUA as $sMobileKey => $sMobileOS) {
             if (preg_match($sMobileKey, $_SERVER['HTTP_USER_AGENT'])) {
@@ -55,5 +59,6 @@ if (!function_exists('isMobileDevice')) {
     }
 }
 
+// ❌ Removed ob_end_flush(); — it can interfere with session headers
 
 ?>
