@@ -1,49 +1,65 @@
 <?php
 ob_start();
-ini_set('date.timezone','Asia/Manila');
+ini_set('date.timezone', 'Asia/Manila');
 date_default_timezone_set('Asia/Manila');
-session_start();
+// Start session early before any output
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
+// Include necessary classes
 require_once('initialize.php');
 require_once('classes/DBConnection.php');
 require_once('classes/SystemSettings.php');
-$db = new DBConnection;
-$conn = $db->conn;
 
-function redirect($url=''){
-	if(!empty($url))
-	echo '<script>location.href="'.base_url .$url.'"</script>';
+// Initialize DB connection safely
+try {
+    $db = new DBConnection;
+    $conn = $db->conn;
+} catch (mysqli_sql_exception $e) {
+    die("Database connection failed: " . $e->getMessage());
 }
-function validate_image($file){
-	if(!empty($file)){
-			// exit;
-		if(is_file(base_app.$file)){
-			return base_url.$file;
-		}else{
-			return base_url.'dist/img/no-image-available.png';
-		}
-	}else{
-		return base_url.'dist/img/no-image-available.png';
-	}
+
+// Helper: Redirect using JavaScript
+function redirect($url = '') {
+    if (!empty($url)) {
+        echo '<script>location.href="' . base_url . $url . '"</script>';
+        exit;
+    }
 }
-function isMobileDevice(){
+
+// Helper: Validate image path
+function validate_image($file) {
+    if (!empty($file)) {
+        if (is_file(base_app . $file)) {
+            return base_url . $file;
+        } else {
+            return base_url . 'dist/img/no-image-available.png';
+        }
+    } else {
+        return base_url . 'dist/img/no-image-available.png';
+    }
+}
+
+// Helper: Detect if client is a mobile device
+function isMobileDevice() {
     $aMobileUA = array(
-        '/iphone/i' => 'iPhone', 
-        '/ipod/i' => 'iPod', 
-        '/ipad/i' => 'iPad', 
-        '/android/i' => 'Android', 
-        '/blackberry/i' => 'BlackBerry', 
+        '/iphone/i' => 'iPhone',
+        '/ipod/i' => 'iPod',
+        '/ipad/i' => 'iPad',
+        '/android/i' => 'Android',
+        '/blackberry/i' => 'BlackBerry',
         '/webos/i' => 'Mobile'
     );
 
-    //Return true if Mobile User Agent is detected
-    foreach($aMobileUA as $sMobileKey => $sMobileOS){
-        if(preg_match($sMobileKey, $_SERVER['HTTP_USER_AGENT'])){
+    foreach ($aMobileUA as $sMobileKey => $sMobileOS) {
+        if (preg_match($sMobileKey, $_SERVER['HTTP_USER_AGENT'])) {
             return true;
         }
     }
-    //Otherwise return false..  
+
     return false;
 }
+
 ob_end_flush();
 ?>
