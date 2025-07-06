@@ -1,25 +1,28 @@
 <?php
+// 🚫 DO NOT add any blank lines or spaces before this line
+
+// ✅ Start output buffering to avoid "headers already sent" issues
 ob_start();
+
+// ✅ Set timezone
 ini_set('date.timezone', 'Asia/Manila');
 date_default_timezone_set('Asia/Manila');
+
+// ✅ Start session only if not already started
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// Include necessary classes
+// ✅ Include necessary files (no output in these files!)
 require_once('initialize.php');
 require_once('classes/DBConnection.php');
 require_once('classes/SystemSettings.php');
 
-// Initialize DB connection safely
-try {
-    $db = new DBConnection;
-    $conn = $db->conn;
-} catch (mysqli_sql_exception $e) {
-    die("Database connection failed: " . $e->getMessage());
-}
+// ✅ Create DB connection
+$db = new DBConnection;
+$conn = $db->conn;
 
-// Helper: Redirect using JavaScript
+// ✅ Redirect helper
 function redirect($url = '') {
     if (!empty($url)) {
         echo '<script>location.href="' . base_url . $url . '"</script>';
@@ -27,7 +30,7 @@ function redirect($url = '') {
     }
 }
 
-// Helper: Validate image path
+// ✅ Image validation helper
 function validate_image($file) {
     if (!empty($file)) {
         if (is_file(base_app . $file)) {
@@ -40,7 +43,7 @@ function validate_image($file) {
     }
 }
 
-// Helper: Detect if client is a mobile device
+// ✅ Mobile device checker
 function isMobileDevice() {
     $aMobileUA = array(
         '/iphone/i' => 'iPhone',
@@ -60,5 +63,6 @@ function isMobileDevice() {
     return false;
 }
 
+// ✅ End output buffering (optional)
 ob_end_flush();
 ?>
