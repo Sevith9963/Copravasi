@@ -1,16 +1,38 @@
 <?php
-ob_start(); // Start output buffering early
+// Absolutely no whitespace or BOM before this line
+
+// Start output buffering (to prevent accidental output)
+ob_start();
+
+// Set PHP configuration before output
 ini_set('date.timezone', 'Asia/Manila');
 date_default_timezone_set('Asia/Manila');
 
-// Must be before any output
-session_start();
+// Optional: Secure session settings (must come before session_start)
+ini_set('session.use_only_cookies', 1);
+ini_set('session.cookie_httponly', 1);
+ini_set('session.cookie_secure', isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 1 : 0);
 
+// Set session cookie parameters before session_start
+session_set_cookie_params([
+    'lifetime' => 0,
+    'path' => '/',
+    'domain' => '',
+    'secure' => isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on',
+    'httponly' => true,
+    'samesite' => 'Lax', // Or 'Strict'
+]);
+
+// Start session safely
+session_start();
+session_regenerate_id(true);
+
+// Load other required files
 require_once('initialize.php');
 require_once('classes/DBConnection.php');
 require_once('classes/SystemSettings.php');
 
-// Create DB connection
+// Connect to DB with exception handling
 try {
     $db = new DBConnection();
     $conn = $db->conn;
@@ -18,7 +40,7 @@ try {
     die("Database connection failed. Please contact the administrator.");
 }
 
-// Helpers
+// Helper Functions
 if (!function_exists('redirect')) {
     function redirect($url = '') {
         if (!empty($url)) {
@@ -55,5 +77,6 @@ if (!function_exists('isMobileDevice')) {
     }
 }
 
-ob_end_flush(); // Flush buffer after setup
+// Flush the output buffer after everything is loaded
+ob_end_flush();
 ?>
