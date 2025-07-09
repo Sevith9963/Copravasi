@@ -14,7 +14,7 @@ $dev_data = array(
 );
 
 // Define constants only if not already defined
-if (!defined('base_url')) define('base_url', 'http://localhost/Copravasi/');
+if (!defined('base_url')) define('base_url', 'https://tourism-2-laic.onrender.com/');
 if (!defined('base_app')) define('base_app', str_replace('\\', '/', __DIR__) . '/');
 if (!defined('dev_data')) define('dev_data', $dev_data);
 
