@@ -3,6 +3,6 @@ services:
     name: tourism-php
     env: docker
     plan: free
-    repo: https://github.com/Sevith9963/tourism
+    repo: https://github.com/Sevith9963/Copravasi
     dockerfilePath: ./Dockerfile
     region: oregon
